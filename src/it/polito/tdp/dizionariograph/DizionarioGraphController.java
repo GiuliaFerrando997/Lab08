@@ -41,7 +41,15 @@ public class DizionarioGraphController {
 
 	    @FXML
 	    void doCercaGradoMAX(ActionEvent event) {
-
+	    	try {
+	    	int lunghezza = Integer.parseInt(this.txtLettere.getText());
+	    	model.createGraph(lunghezza);
+	    	} catch(NumberFormatException e) {
+	    		txtResult.setText("Inserire una numero di lettere valido");
+	    	} catch(RuntimeException e ) {
+	    		txtResult.setText("Errore di connessione al database!");
+	    	}
+	    	
 	    }
 
 	    @FXML
@@ -56,7 +64,9 @@ public class DizionarioGraphController {
 
 	    @FXML
 	    void doReset(ActionEvent event) {
-
+	    	this.txtLettere.clear();
+	    	this.txtParola.clear();
+	    	this.txtResult.clear();
 	    }
 	    
 	    @FXML

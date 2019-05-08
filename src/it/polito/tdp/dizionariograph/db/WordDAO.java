@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class WordDAO {
 
@@ -33,6 +34,5 @@ public class WordDAO {
 			e.printStackTrace();
 			throw new RuntimeException("Error Connection Database");
 		}
-	}
 
 }
