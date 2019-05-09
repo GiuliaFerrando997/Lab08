@@ -2,7 +2,12 @@ package it.polito.tdp.dizionariograph;
 
 import it.polito.tdp.dizionariograph.model.Model;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import org.jgrapht.graph.DefaultEdge;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -41,25 +46,44 @@ public class DizionarioGraphController {
 
 	    @FXML
 	    void doCercaGradoMAX(ActionEvent event) {
-	    	try {
-	    	int lunghezza = Integer.parseInt(this.txtLettere.getText());
-	    	model.createGraph(lunghezza);
-	    	} catch(NumberFormatException e) {
-	    		txtResult.setText("Inserire una numero di lettere valido");
-	    	} catch(RuntimeException e ) {
-	    		txtResult.setText("Errore di connessione al database!");
-	    	}
-	    	
+	    	int max = Integer.parseInt(model.findMaxDegree().split(" ")[0]);
+	    	String parola = model.findMaxDegree().split(" ")[1];
+	    	Set<DefaultEdge> vicini = model.displayNeighbours(parola);
+	    	this.txtResult.setText("Il grado massimo e': "+max+"\n"
+	    			+ "la parola e': "+parola+ "\n"
+	    					+ "le parole vicine sono: "+vicini);
 	    }
 
 	    @FXML
 	    void doCercaVicini(ActionEvent event) {
-
+	    	String parolaInserita = this.txtParola.getText();
+	    	System.out.println(parolaInserita+"!!!");
+	    	if(parolaInserita!=null && parolaInserita.length()!=0) {
+	    		try {
+			    	Set<DefaultEdge> vicini = model.displayNeighbours(parolaInserita);
+			    	this.txtResult.setText("Neighbours di "+parolaInserita+": " + vicini + "\n");
+		    		} catch(NumberFormatException e) {
+			    		txtResult.setText("Inserire una numero di lettere valido");
+			    	} catch(RuntimeException e ) {
+			    		txtResult.setText("Errore di connessione al database!");
+			    	}
+	    	}
+	    	else txtResult.setText("Inserire una parola");
+	    	
 	    }
 
 	    @FXML
 	    void doGrafo(ActionEvent event) {
-
+	    	try {
+		    	int lunghezza = Integer.parseInt(this.txtLettere.getText());
+		    	model.createGraph(lunghezza);
+		    	this.btnVicini.setDisable(false);
+		    	this.btnGrado.setDisable(false);
+		    	} catch(NumberFormatException e) {
+		    		txtResult.setText("Inserire una numero di lettere valido");
+		    	} catch(RuntimeException e ) {
+		    		txtResult.setText("Errore di connessione al database!");
+		    	}
 	    }
 
 	    @FXML
